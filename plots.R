@@ -9,11 +9,16 @@
 # pabloe.gutierrezfonseca@gmail.com
 # ---------------------------------------------
 #  
-
+install.packages("lemon")
 library(patchwork)
 library(tidyr)
 library(ggplot2)
 library(dplyr)
+library(lemon)
+
+# install.packages("devtools")
+devtools::install_github("teunbrand/ggh4x")
+library(ggh4x)
 
 data=read.csv("data/channelform.csv")
 attach(data)
@@ -270,12 +275,23 @@ p <- ggplot(data, aes(x = streams, y = value, fill = streams))+
   'Cobble' = "Cobble (%)",
   'Gravel' = "Gravel (%)",
   'sand' = "Sand (%)",
-  'silt' = "Silt (%)")), strip.position = "top") 
-  
-p1 <- p +   theme(strip.placement = 'outside') +
-  theme(strip.switch.pad.grid = unit(8, "cm"))
+  'silt' = "Silt (%)")), strip.position = "top") +
 
-p1
+# Para modificar la escala de cada plot individualmente  
+  facetted_pos_scales(
+    y = rep(list(
+      scale_y_continuous(limits = c(0, 2500)),
+      scale_y_continuous(limits = c(0, 20)),
+      scale_y_continuous(limits = c(0, 18)),
+      scale_y_continuous(limits = c(0, 100)),
+      scale_y_continuous(limits = c(0, 100)),
+      scale_y_continuous(limits = c(0, 100)),
+      scale_y_continuous(limits = c(0, 100)),
+      scale_y_continuous(limits = c(0, 100)),
+      scale_y_continuous(limits = c(0, 100))
+    )))
+
+p
 
 p + ggsave("Figure 2.jpg",width = 8.5, height = 11, units = "in", dpi=300)
 
