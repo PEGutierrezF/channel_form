@@ -16,7 +16,7 @@ library(ggplot2)
 library(dplyr)
 library(lemon)
 
-# install.packages("devtools")
+# Modify the y_scale by plot.  Individually
 devtools::install_github("teunbrand/ggh4x")
 library(ggh4x)
 
@@ -277,12 +277,12 @@ p <- ggplot(data, aes(x = streams, y = value, fill = streams))+
   'sand' = "Sand (%)",
   'silt' = "Silt (%)")), strip.position = "top") +
 
-# Para modificar la escala de cada plot individualmente  
+# Modify the y_scale by plot.  Individually 
   facetted_pos_scales(
     y = rep(list(
       scale_y_continuous(limits = c(0, 2500)),
       scale_y_continuous(limits = c(0, 20)),
-      scale_y_continuous(limits = c(0, 18)),
+      scale_y_continuous(limits = c(0, 16)),
       scale_y_continuous(limits = c(0, 100)),
       scale_y_continuous(limits = c(0, 100)),
       scale_y_continuous(limits = c(0, 100)),
