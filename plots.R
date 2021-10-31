@@ -241,12 +241,14 @@ data$streams <- factor(data$streams,
                 levels = c("V-shape", "Trapezoid","U-shape"),ordered = TRUE)
 
 
-p <-  ggplot(data, aes(x = streams, y = value, fill = streams))+
+p <- ggplot(data, aes(x = streams, y = value, fill = streams))+
   geom_violin() + 
   geom_jitter(width=0.1,alpha=0.5) +
   labs(title="", x="Channel form", y = "value") +
   
-  scale_fill_manual(values=c("#7570b3", "#d95f02", "#1f78b4")) +
+  stat_summary(fun = "mean", geom = "crossbar", width = 0.4, colour = "#91003f") +
+  
+  scale_fill_manual(values=c("#5ab4ac", "#fc8d59", "#4575b4")) +
   
   theme_bw() +
   theme(legend.position="none") +
@@ -257,7 +259,7 @@ p <-  ggplot(data, aes(x = streams, y = value, fill = streams))+
   theme(axis.text.x=element_text(angle=0, size=12, vjust=0.5, color="black")) + #subaxis x
   theme(axis.text.y=element_text(angle=0, size=12, vjust=0.5, color="black")) + #subaxis y
   
-  facet_wrap(~variable, scales="free_y",  
+  facet_wrap(.~variable, scales="free_y",  
   
     labeller = labeller(variable=c( #second, rename variables
   'elevation' = "Stream elevation (masl)",
@@ -269,9 +271,12 @@ p <-  ggplot(data, aes(x = streams, y = value, fill = streams))+
   'sand' = "Sand (%)",
   'silt' = "Silt (%)")), strip.position = "top") 
   
-p 
+p1 <- p +   theme(strip.placement = 'outside') +
+  theme(strip.switch.pad.grid = unit(8, "cm"))
 
-p  + ggsave("Figure 2.jpg",width = 8.5, height = 11, units = "in", dpi=300)
+p1
+
+p + ggsave("Figure 2.jpg",width = 8.5, height = 11, units = "in", dpi=300)
 
 
 
