@@ -252,7 +252,8 @@ p <- ggplot(data, aes(x = streams, y = value, fill = streams))+
   
   theme_bw() +
   theme(legend.position="none") +
-  theme(strip.text.x = element_text(size=11, color="black", face="bold")) +
+  theme(strip.text.x = element_text(size=11, color="black", face="bold"),
+        strip.placement = 'outside') +
 
   theme(axis.title.x = element_text(size = 16, angle = 0)) + # axis x
   theme(axis.title.y = element_text(size = 16, angle = 90)) + # axis y
