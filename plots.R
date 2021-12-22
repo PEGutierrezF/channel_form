@@ -15,8 +15,10 @@ library(tidyr)
 library(ggplot2)
 library(dplyr)
 library(lemon)
+library(gtable)
+library(grid)
 
-# Modify the y_scale by plot.  Individually
+# Modify the y_scale by plot.  Individually 
 devtools::install_github("teunbrand/ggh4x")
 library(ggh4x)
 
@@ -249,11 +251,11 @@ data$streams <- factor(data$streams,
 p <- ggplot(data, aes(x = streams, y = value, fill = streams))+
   geom_violin() + 
   geom_jitter(width=0.1,alpha=0.5) +
-  labs(title="", x="Channel form", y = "value") +
+  labs(title="", x="Channel shape", y = "value") +
   
-  stat_summary(fun = "mean", geom = "crossbar", width = 0.4, colour = "#91003f") +
+  stat_summary(fun = "mean", geom = "crossbar", width = 0.4, colour = "#ff0000") +
   
-  scale_fill_manual(values=c("#5ab4ac", "#fc8d59", "#4575b4")) +
+  scale_fill_manual(values=c("gray90", "gray90", "gray90")) +
   
   theme_bw() +
   theme(legend.position="none") +
@@ -269,7 +271,7 @@ p <- ggplot(data, aes(x = streams, y = value, fill = streams))+
   
     labeller = labeller(variable=c( #second, rename variables
   'elevation' = "Stream elevation (masl)",
-  'wide' = "Channel wide (m)",
+  'wide' = "Channel width (m)",
   'velocity' = "Water velocity (m/s)",
   'Boulder' = "Boulder (%)",
   'Cobble' = "Cobble (%)",
@@ -297,3 +299,28 @@ p + ggsave("Figure 2.jpg",width = 8.5, height = 11, units = "in", dpi=300)
 
 
 
+
+# Remove y label  ---------------------------------------------------------
+
+p_tab <- ggplotGrob(p)
+print(p_tab)
+
+gtable_filter_remove <- function (x, name, trim = TRUE){
+  matches <- !(x$layout$name %in% name)
+  x$layout <- x$layout[matches, , drop = FALSE]
+  x$grobs <- x$grobs[matches]
+  if (trim) 
+    x <- gtable_trim(x)
+  x
+}
+
+p_filtered <- gtable_filter_remove(p_tab, name = paste0("axis-l-", c(2,3), "-2"),
+                                   trim = T)
+
+p_filtered1 <- gtable_filter_remove(p_filtered, name = paste0("axis-l-", c(2), "-3"),
+                                   trim = T)
+
+grid.newpage()
+grid.draw(p_filtered1)
+
+ggsave("Figure 2.jpg",p_filtered1,width = 10, height = 11, units = "in", dpi=300)
