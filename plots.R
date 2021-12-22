@@ -262,10 +262,12 @@ p <- ggplot(data, aes(x = streams, y = value, fill = streams))+
   theme(strip.text.x = element_text(size=11, color="black", face="bold"),
         strip.placement = 'outside') +
 
-  theme(axis.title.x = element_text(size = 16, angle = 0)) + # axis x
+  theme(axis.title.x = element_text(size = 16, angle = 0, vjust = -2)) + # axis x
   theme(axis.title.y = element_text(size = 16, angle = 90)) + # axis y
   theme(axis.text.x=element_text(angle=0, size=12, vjust=0.5, color="black")) + #subaxis x
   theme(axis.text.y=element_text(angle=0, size=12, vjust=0.5, color="black")) + #subaxis y
+  
+  theme(plot.margin = margin(0,.5,1,.5, "cm")) +  
   
   facet_wrap(.~variable, scales="free_y",  
   
