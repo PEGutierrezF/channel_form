@@ -22,6 +22,9 @@ library(grid)
 devtools::install_github("teunbrand/ggh4x")
 library(ggh4x)
 
+# cleans global environment
+rm(list = ls())
+
 data=read.csv("data/channelform.csv")
 attach(data)
 

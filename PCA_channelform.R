@@ -2,75 +2,79 @@
 
 
 
-library(ggplot2)
-library(dplyr)
-library(missMDA) # Imputate
-library(ggfortify) # autoplot()
-library(cluster) #pam
-library(factoextra) #get_pca_var()
-library(data.table) # data.table()
-library(labdsv) #loadings.pca(pca)
-library(missForest)
-
-library(devtools)
-
-install_github("vqv/ggbiplot") #ggbiplot
-library(ggbiplot)
-
-channel <- read.csv("data/PCA_channel_form.csv", header=TRUE)
-
-channel_1 <- dplyr::select(channel, -Forma)
-summary(channel_1)
+# ---------------------------------------------
+# Principal component analysis
+# 20 Feb 2022
+# Pablo E. Gutiérrez-Fonseca
+# pabloe.gutierrezfonseca@gmail.com
+# ---------------------------------------------
+#  
 
 
-# Imputate ----------------------------------------------------------------
 
-df1 <- dplyr::select(channel_1, Elevacion, Ancho, Velocidad, Rocas, 
-              Canto, grava, arena, Limo)
-
-df1_a <- missForest(df1, maxiter = 4, ntree = 100,
-                           variablewise = TRUE, decreasing = FALSE, verbose = F, replace = TRUE,
-                           classwt = NULL, cutoff = NULL, strata = NULL,
-                           sampsize = NULL, nodesize = NULL, maxnodes = NULL,
-                           xtrue = NA, parallelize = "no")
-class(df1_a$ximp)
-
-df2_a <- dplyr::select(channel_1, Elevacion, NAtemp, NASatO2)
+# cleans global environment
+rm(list = ls())
 
 
-# New data frame ----------------------------------------------------------
-
-new_channel <- do.call("merge", c(lapply(list(df1_a$ximp, df2_a), data.frame, 
-                      row.names=NULL), by = 0, all = TRUE, sort = FALSE))[-1]
-#remove 1 elevation
-new_channel_1 <- dplyr::select(new_channel, -Elevacion.y)
+channel.form =read.csv("data/physicochemistry.csv", header=T, row.names=1)
 
 
-channel.pca <- prcomp(new_channel_1, center = TRUE, scale =TRUE)
+channel.pca <- prcomp(channel.form, center = TRUE, scale =TRUE)
 summary(channel.pca)
 
+# Variables
+res.var <- get_pca_var(channel.pca)
+res.var$coord          # Coordinates
 
-layout(matrix(1:2, ncol=2))
-screeplot(channel.pca)
-screeplot(channel.pca, type="lines")
+fviz_pca_biplot(channel.pca,
+                repel = TRUE,
+                col.var = "#2E9FDF", # Variables color
+                col.ind = "#696969"  # Individuals color
+)
 
-variance <- (channel.pca$sdev)^2
-varPercent <- variance/sum(variance) * 100
-barplot(varPercent, xlab='PC', ylab='Percent Variance',
-        names.arg=1:length(varPercent), las=1, col='gray') +
-  abline(h=1/ncol(new_channel_1)*100, col="red")
-
-
-
-PCA<- fviz_pca_biplot(channel.pca, label = "var", habillage=channel$Forma,
-                addEllipses=TRUE, ellipse.level=0.95,
-                ggtheme = theme_minimal())
-
-PCA
 # ggplot  -----------------------------------------------------------------
 
-data <- data.table(PC1=channel.pca$x[,1], PC2=channel.pca$x[,2], Forma= channel[,1])
-data <- data[order(channel$Forma),]
+channel.pca$x[1:76] <- "Trapecio"
+channel.pca$x[77:110] <- "U"
+channel.pca$x[11:138] <- "U"
 
-ggplot(data, aes(x=PC1,y=PC2)) +
-  geom_point(size = 2, aes(color=Forma))
+
+
+PCA.biplot <- function(PC, x="PC1", y="PC2") {
+  # PC being a prcomp object
+  data <- data.frame(obsnames=row.names(PC$x), PC$x)
+  # Site names
+  plot <- ggplot(data, aes_string(x=x, y=y)) + 
+    geom_point(aes(colour = obsnames),size=5) +
+    
+    labs(x= "PC1 (40.1%)", y = "PC2 (28.9%)") # Modifica con tus datos
+  # Intercepts  
+  plot <- plot + geom_hline(yintercept=0, size=.2,linetype="dashed") + 
+    geom_vline(xintercept=0, size=.2,linetype="dashed")
+  # Loading table  
+  datapc <- data.frame(varnames=rownames(PC$rotation), PC$rotation)
+  mult <- min((max(data[,y]) - min(data[,y])/(max(datapc[,y])-min(datapc[,y]))),
+              (max(data[,x]) - min(data[,x])/(max(datapc[,x])-min(datapc[,x]))))
+  datapc <- transform(datapc,v1 = .7 * mult * (get(x)),
+                      v2 = .7 * mult * (get(y)))
+  # Coordinates & loading names 
+  plot <- plot + coord_equal() + ylim(-3.5,3.5) + xlim(-4,5) +
+    geom_text(data=datapc, aes(x=v1, y=v2, label=varnames), #varnames
+              size = 6, vjust=-0.5, color="black")
+  # Arrows  
+  plot <- plot + geom_segment(data=datapc, aes(x=0, y=0, xend=v1, yend=v2), 
+                              arrow=arrow(length=unit(0.2,"cm")), alpha=0.75, color="black")
+  plot <- plot + theme_bw() +
+    theme(plot.margin = margin(1.2,1.2,1.2,1.2, "cm"))+ 
+    theme(legend.position = "none") +
+    theme(axis.title.x = element_text(size = 14, angle = 0)) + # axis x
+    theme(axis.title.y = element_text(size = 14, angle = 90)) + # axis y
+    theme(axis.text.x=element_text(angle=0, size=12, vjust=0.5, color="black")) + #subaxis x
+    theme(axis.text.y=element_text(angle=0, size=12, vjust=0.5, color="black"))  #subaxis y
+  
+  plot
+}
+
+PCA.biplot(channel.pca)
+
+
