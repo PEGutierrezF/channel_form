@@ -70,7 +70,7 @@ PCA.biplot <- function(PC, x="PC1", y="PC2") {
   # Coordinates & loading names 
   plot <- plot + coord_equal() + ylim(-4,4) + xlim(-5,5) +
     geom_text(data=datapc, aes(x=v1, y=v2, label=physico.names), #varnames
-              size = 6, vjust=-0.2,hjust =0, color="black")
+              size = 4, vjust=0.5,hjust =0.5, color="black")
   # Arrows  
   plot <- plot + geom_segment(data=datapc, aes(x=0, y=0, xend=v1, yend=v2), 
                               arrow=arrow(length=unit(0.2,"cm")), alpha=0.75, color="black")
@@ -87,4 +87,5 @@ PCA.biplot <- function(PC, x="PC1", y="PC2") {
 Fig <- PCA.biplot(channel.pca)
 Fig
 
-ggsave("Figure 1.jpeg", Fig, width = 200, height = 220, units = "mm")
+ggsave("Figure 1.jpeg", Fig, width = 200, height = 150, units = "mm")
+
