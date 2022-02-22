@@ -56,11 +56,11 @@ PCA.biplot <- function(PC, x="PC1", y="PC2") {
     geom_point(aes(colour = new.groups$group), size=5) +
     scale_color_manual(values=c("#67a9cf", "#91cf60", "#d73027"),
                        breaks=c("V-Shape", "Trapecio", "U-Shape"),) +
-    
     labs(x= "PC1 (32.4%)", y = "PC2 (16.5%)", colour ="Channel form") # Modifica con tus datos
   # Intercepts  
   plot <- plot + geom_hline(yintercept=0, size=.2,linetype="dashed") + 
-    geom_vline(xintercept=0, size=.2,linetype="dashed")
+    geom_vline(xintercept=0, size=.2,linetype="dashed") 
+  
   # Loading table  
   datapc <- data.frame(varnames=rownames(PC$rotation), PC$rotation)
   mult <- min((max(data[,y]) - min(data[,y])/(max(datapc[,y])-min(datapc[,y]))),
@@ -89,3 +89,9 @@ Fig
 
 ggsave("Figure 1.jpeg", Fig, width = 200, height = 150, units = "mm")
 
+
+stat_chull(aes(colour = new.groups$group), 
+           alpha = 0.1, 
+           geom = "polygon")
+
+https://stackoverflow.com/questions/18163153/convex-hulls-with-ggbiplot
