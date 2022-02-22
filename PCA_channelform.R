@@ -44,7 +44,7 @@ physico.names <- c("Elevacion.x" = "Elevation",
                    "arena" = "Sand",
                    "Limo" = "Silt",
                    "NAtemp" = "Temperature",
-                   "NaSatO2"="D.O") 
+                   "NaSatO2"="Diss. Oxygen") 
  
 new.groups =read.csv("data/PCA_groups.csv")
 
@@ -54,7 +54,8 @@ PCA.biplot <- function(PC, x="PC1", y="PC2") {
   # Site names
   plot <- ggplot(data, aes_string(x=x, y=y)) + 
     geom_point(aes(colour = new.groups$group), size=5) +
-    scale_color_manual(values=c("#67a9cf", "#91cf60", "#d73027")) +
+    scale_color_manual(values=c("#67a9cf", "#91cf60", "#d73027"),
+                       breaks=c("V-Shape", "Trapecio", "U-Shape"),) +
     
     labs(x= "PC1 (32.4%)", y = "PC2 (16.5%)", colour ="Channel form") # Modifica con tus datos
   # Intercepts  
@@ -67,13 +68,14 @@ PCA.biplot <- function(PC, x="PC1", y="PC2") {
   datapc <- transform(datapc,v1 = .7 * mult * (get(x)),
                       v2 = .7 * mult * (get(y)))
   # Coordinates & loading names 
-  plot <- plot + coord_equal() + ylim(-3.5,3.5) + xlim(-4,5) +
+  plot <- plot + coord_equal() + ylim(-4,4) + xlim(-5,5) +
     geom_text(data=datapc, aes(x=v1, y=v2, label=physico.names), #varnames
-              size = 6, vjust=-0.5, color="black")
+              size = 6, vjust=-0.2,hjust =0, color="black")
   # Arrows  
   plot <- plot + geom_segment(data=datapc, aes(x=0, y=0, xend=v1, yend=v2), 
                               arrow=arrow(length=unit(0.2,"cm")), alpha=0.75, color="black")
   plot <- plot + theme_bw() +
+   # theme(plot.margin = unit(c(1.2,1.2,1.2,1.2), "cm")) +
     theme(axis.title.x = element_text(size = 14, angle = 0)) + # axis x
     theme(axis.title.y = element_text(size = 14, angle = 90)) + # axis y
     theme(axis.text.x=element_text(angle=0, size=12, vjust=0.5, color="black")) + #subaxis x
@@ -82,6 +84,7 @@ PCA.biplot <- function(PC, x="PC1", y="PC2") {
   plot
 }
 
-PCA.biplot(channel.pca)
+Fig <- PCA.biplot(channel.pca)
+Fig
 
-
+ggsave("Figure 1.jpeg", Fig, width = 200, height = 220, units = "mm")
