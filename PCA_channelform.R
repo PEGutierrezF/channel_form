@@ -34,20 +34,29 @@ fviz_pca_biplot(channel.pca,
 
 # ggplot  -----------------------------------------------------------------
 
-channel.pca$x[1:76] <- "Trapecio"
-channel.pca$x[77:110] <- "U"
-channel.pca$x[11:138] <- "U"
-
-
+# New names physicochemical var.
+physico.names <- c("Elevacion.x" = "Elevation",
+                   "Ancho"="Width",
+                   "Velocidad"= "Velocity", 
+                   "Rocas" = "Boulders",
+                   "Canto"="Cobbles",
+                   "grava"="gravel",
+                   "arena" = "Sand",
+                   "Limo" = "Silt",
+                   "NAtemp" = "Temperature",
+                   "NaSatO2"="D.O") 
+ 
+new.groups =read.csv("data/PCA_groups.csv")
 
 PCA.biplot <- function(PC, x="PC1", y="PC2") {
   # PC being a prcomp object
   data <- data.frame(obsnames=row.names(PC$x), PC$x)
   # Site names
   plot <- ggplot(data, aes_string(x=x, y=y)) + 
-    geom_point(aes(colour = obsnames),size=5) +
+    geom_point(aes(colour = new.groups$group), size=5) +
+    scale_color_manual(values=c("#67a9cf", "#91cf60", "#d73027")) +
     
-    labs(x= "PC1 (40.1%)", y = "PC2 (28.9%)") # Modifica con tus datos
+    labs(x= "PC1 (32.4%)", y = "PC2 (16.5%)", colour ="Channel form") # Modifica con tus datos
   # Intercepts  
   plot <- plot + geom_hline(yintercept=0, size=.2,linetype="dashed") + 
     geom_vline(xintercept=0, size=.2,linetype="dashed")
@@ -59,14 +68,12 @@ PCA.biplot <- function(PC, x="PC1", y="PC2") {
                       v2 = .7 * mult * (get(y)))
   # Coordinates & loading names 
   plot <- plot + coord_equal() + ylim(-3.5,3.5) + xlim(-4,5) +
-    geom_text(data=datapc, aes(x=v1, y=v2, label=varnames), #varnames
+    geom_text(data=datapc, aes(x=v1, y=v2, label=physico.names), #varnames
               size = 6, vjust=-0.5, color="black")
   # Arrows  
   plot <- plot + geom_segment(data=datapc, aes(x=0, y=0, xend=v1, yend=v2), 
                               arrow=arrow(length=unit(0.2,"cm")), alpha=0.75, color="black")
   plot <- plot + theme_bw() +
-    theme(plot.margin = margin(1.2,1.2,1.2,1.2, "cm"))+ 
-    theme(legend.position = "none") +
     theme(axis.title.x = element_text(size = 14, angle = 0)) + # axis x
     theme(axis.title.y = element_text(size = 14, angle = 90)) + # axis y
     theme(axis.text.x=element_text(angle=0, size=12, vjust=0.5, color="black")) + #subaxis x
