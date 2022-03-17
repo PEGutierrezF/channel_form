@@ -94,4 +94,4 @@ stat_chull(aes(colour = new.groups$group),
            alpha = 0.1, 
            geom = "polygon")
 
-https://stackoverflow.com/questions/18163153/convex-hulls-with-ggbiplot
+# https://stackoverflow.com/questions/18163153/convex-hulls-with-ggbiplot
