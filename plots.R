@@ -89,7 +89,7 @@ velocity_data1$streams <- factor(velocity_data1$streams,
                              levels = c("V-shape", "Trapezoid","U-shape"),ordered = TRUE)
 
 V <- ggplot(velocity_data1, aes(x=streams, y=value,  fill=streams)) + 
-  labs(title="", x="", y = "Velocity (m/s)")+
+  labs(title="", x="", y = "Velocity (categories)")+
   
   scale_fill_manual(values=c("#7570b3", "#d95f02", "#1f78b4")) +
   geom_violin()+
@@ -270,14 +270,14 @@ p <- ggplot(data, aes(x = streams, y = value, fill = streams))+
   theme(axis.text.x=element_text(angle=0, size=12, vjust=0.5, color="black")) + #subaxis x
   theme(axis.text.y=element_text(angle=0, size=12, vjust=0.5, color="black")) + #subaxis y
   
-  theme(plot.margin = margin(0,.5,1,.5, "cm")) +  
-  
+  theme(plot.margin = unit(c(0,0.5,1,0.5), "cm"))+ #(t = 0, r = 0, b = 0, l = 0)
+
   facet_wrap(.~variable, scales="free_y",  
   
     labeller = labeller(variable=c( #second, rename variables
   'elevation' = "Stream elevation (masl)",
   'wide' = "Channel width (m)",
-  'velocity' = "Water velocity (m/s)",
+  'velocity' = "Water velocity (categories)",
   'Boulder' = "Boulder (%)",
   'Cobble' = "Cobble (%)",
   'Gravel' = "Gravel (%)",
@@ -300,7 +300,7 @@ p <- ggplot(data, aes(x = streams, y = value, fill = streams))+
 
 p
 
-p + ggsave("Figure 2.jpg",width = 8.5, height = 11, units = "in", dpi=300)
+p + ggsave("Figure 2.jpg",width = 9, height = 11, units = "in", dpi=300)
 
 
 
