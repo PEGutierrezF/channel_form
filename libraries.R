@@ -15,13 +15,17 @@
 # cleans global environment
 rm(list = ls())
 
-library(factoextra)
-library(ggplot2)
 
-libraries <- c("ggplot2", "ggpubr","dplyr", 'patchwork',
-               'gridExtra',"cowplot","missForest","factoextra",
-               "labdsv","data.table","ggfortify")
+
+libraries <- c("cowplot","cluster", "data.table","dplyr","factoextra", "ggplot2", 
+               "ggpubr","gtable", "ggfortify","grid",
+               'gridExtra',"labdsv","lemon","missForest","missMDA",'patchwork',
+                "tidyr")
 lapply(libraries, require, character.only = TRUE)
+
+# Modify the y_scale by plot.  Individually 
+devtools::install_github("teunbrand/ggh4x")
+library(ggh4x)
 
 
 library(missMDA) # Imputate

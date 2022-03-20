@@ -9,18 +9,8 @@
 # pabloe.gutierrezfonseca@gmail.com
 # ---------------------------------------------
 #  
-install.packages("lemon")
-library(patchwork)
-library(tidyr)
-library(ggplot2)
-library(dplyr)
-library(lemon)
-library(gtable)
-library(grid)
 
-# Modify the y_scale by plot.  Individually 
-devtools::install_github("teunbrand/ggh4x")
-library(ggh4x)
+
 
 # cleans global environment
 rm(list = ls())
