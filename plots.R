@@ -231,7 +231,8 @@ Fig + ggsave("Figure 1.jpg",width = 8.5, height = 11, units = "in", dpi=300)
 
 
 
-library(tidyverse)
+
+# Figure 2.  This is for paper --------------------------------------------
 
 # First, order variables
 data$variable = factor(data$variable, levels=c('elevation','wide','velocity',
