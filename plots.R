@@ -236,46 +236,56 @@ Fig + ggsave("Figure 1.jpg",width = 8.5, height = 11, units = "in", dpi=300)
 
 # First, order variables
 data$variable = factor(data$variable, levels=c('elevation','wide','velocity',
-                        'Boulder', "Cobble","Gravel", "sand", "silt"))
+                                               'Boulder', "Cobble","Gravel", "sand", "silt"))
 
 data$streams <- factor(data$streams,
-                levels = c("V-shape", "Trapezoid","U-shape"),ordered = TRUE)
+                       levels = c("V-shape", "Trapezoid","U-shape"),ordered = TRUE)
 
 
 p <- ggplot(data, aes(x = streams, y = value, fill = streams))+
   geom_violin() + 
   geom_jitter(width=0.1,alpha=0.5) +
+  
+  # Axis label  
   labs(title="", x="Channel shape", y = "value") +
   
+  # Statistics
   stat_summary(fun = "mean", geom = "crossbar", width = 0.4, colour = "#ff0000") +
   
+  # Color channel form   
   scale_fill_manual(values=c("gray90", "gray90", "gray90")) +
   
+  # Legend
   theme_bw() +
   theme(legend.position="none") +
-  theme(strip.text.x = element_text(size=11, color="black", face="bold"),
-        strip.placement = 'outside') +
-
+  
+  # Axis
   theme(axis.title.x = element_text(size = 16, angle = 0, vjust = -2)) + # axis x
   theme(axis.title.y = element_text(size = 16, angle = 90)) + # axis y
   theme(axis.text.x=element_text(angle=0, size=12, vjust=0.5, color="black")) + #subaxis x
   theme(axis.text.y=element_text(angle=0, size=12, vjust=0.5, color="black")) + #subaxis y
   
-  theme(plot.margin = unit(c(0,0.5,1,0.5), "cm"))+ #(t = 0, r = 0, b = 0, l = 0)
-
-  facet_wrap(.~variable, scales="free_y",  
+  # Strips  
+  theme(strip.text.x = element_text(size=11, color="black", face="bold")) +
+  theme(strip.placement = 'outside') +
   
-    labeller = labeller(variable=c( #second, rename variables
-  'elevation' = "Stream elevation (masl)",
-  'wide' = "Channel width (m)",
-  'velocity' = "Water velocity (categories)",
-  'Boulder' = "Boulder (%)",
-  'Cobble' = "Cobble (%)",
-  'Gravel' = "Gravel (%)",
-  'sand' = "Sand (%)",
-  'silt' = "Silt (%)")), strip.position = "top") +
-
-# Modify the y_scale by plot.  Individually 
+  # Margin
+  theme(plot.margin = unit(c(0,0.5,1,0.5), "cm"))+ #(t = 0, r = 0, b = 0, l = 0)
+  
+  facet_wrap(.~variable, scales="free_y",  
+             
+             labeller = labeller(variable=c( #second, rename variables
+               'elevation' = "Stream elevation (masl)",
+               'wide' = "Channel width (m)",
+               'velocity' = "Water velocity (categories)",
+               'Boulder' = "Boulder (%)",
+               'Cobble' = "Cobble (%)",
+               'Gravel' = "Gravel (%)",
+               'sand' = "Sand (%)",
+               'silt' = "Silt (%)")), strip.position = "top") +
+  
+  
+  # Modify the y_scale by plot.  Individually 
   facetted_pos_scales(
     y = rep(list(
       scale_y_continuous(limits = c(0, 2500)),
@@ -286,9 +296,8 @@ p <- ggplot(data, aes(x = streams, y = value, fill = streams))+
       scale_y_continuous(limits = c(0, 100)),
       scale_y_continuous(limits = c(0, 100)),
       scale_y_continuous(limits = c(0, 100)),
-      scale_y_continuous(limits = c(0, 100))
-    )))
-
+      scale_y_continuous(limits = c(0, 100)) 
+    )))  
 p
 
 p + ggsave("Figure 2.jpg",width = 9, height = 11, units = "in", dpi=300)
@@ -314,7 +323,7 @@ p_filtered <- gtable_filter_remove(p_tab, name = paste0("axis-l-", c(2,3), "-2")
                                    trim = T)
 
 p_filtered1 <- gtable_filter_remove(p_filtered, name = paste0("axis-l-", c(2), "-3"),
-                                   trim = T)
+                                    trim = T)
 
 grid.newpage()
 grid.draw(p_filtered1)
