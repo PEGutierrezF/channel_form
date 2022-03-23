@@ -304,7 +304,6 @@ p + ggsave("Figure 2.jpg",width = 9, height = 11, units = "in", dpi=300)
 
 
 
-
 # Remove y label  ---------------------------------------------------------
 
 p_tab <- ggplotGrob(p)
