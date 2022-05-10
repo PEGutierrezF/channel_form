@@ -87,7 +87,7 @@ PCA.biplot <- function(PC, x="PC1", y="PC2") {
 Fig <- PCA.biplot(channel.pca)
 Fig
 
-ggsave("Figure 1.jpeg", Fig, width = 200, height = 150, units = "mm")
+ggsave("Figure 1.pdf", Fig, width = 200, height = 150, units = "mm")
 
 
 stat_chull(aes(colour = new.groups$group), 
