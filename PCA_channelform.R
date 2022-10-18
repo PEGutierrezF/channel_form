@@ -23,8 +23,8 @@ channel.form =read.csv("data/physicochemistry.csv", header=T, row.names=1)
 channel.pca <- prcomp(channel.form, center = TRUE, scale =TRUE)
 summary(channel.pca)
 
-# Variables
-res.var <- get_pca_var(channel.pca)
+
+res.var <- get_pca_var(channel.pca) # Variables
 res.var$coord          # Coordinates
 
 fviz_pca_biplot(channel.pca,
