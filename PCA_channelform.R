@@ -16,6 +16,7 @@
 rm(list = ls())
 
 
+
 channel.form =read.csv("data/physicochemistry.csv", header=T, row.names=1)
 
 
@@ -40,7 +41,7 @@ physico.names <- c("Elevacion.x" = "Elevation",
                    "Velocidad"= "Velocity", 
                    "Rocas" = "Boulders",
                    "Canto"="Cobbles",
-                   "grava"="gravel",
+                   "grava"="Gravel",
                    "arena" = "Sand",
                    "Limo" = "Silt",
                    "NAtemp" = "Temperature",
