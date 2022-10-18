@@ -15,6 +15,8 @@
 # cleans global environment
 rm(list = ls())
 
+
+
 data=read.csv("data/channelform.csv")
 attach(data)
 
