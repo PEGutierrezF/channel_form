@@ -21,6 +21,7 @@ libraries <- c("cowplot","cluster", "data.table","dplyr","factoextra", "ggplot2"
                "ggpubr","gtable", "ggfortify","grid",
                'gridExtra',"labdsv","lemon","missForest","missMDA",'patchwork',
                 "tidyr")
+
 lapply(libraries, require, character.only = TRUE)
 
 # Modify the y_scale by plot.  Individually 
