@@ -57,7 +57,7 @@ PCA.biplot <- function(PC, x="PC1", y="PC2") {
     geom_point(aes(colour = new.groups$group), size=5) +
     scale_color_manual(values=c("#67a9cf", "#91cf60", "#d73027"),
                        breaks=c("V-Shape", "Trapezoid", "U-Shape"),) +
-    labs(x= "PC1 (32.4%)", y = "PC2 (16.5%)", colour ="Channel form") # Modifica con tus datos
+    labs(x= "PC1 (32.4%)", y = "PC2 (16.5%)", colour ="Hydrogeomorphological\nclassification") # Modifica con tus datos
   # Intercepts  
   plot <- plot + geom_hline(yintercept=0, size=.2,linetype="dashed") + 
     geom_vline(xintercept=0, size=.2,linetype="dashed") 
@@ -71,12 +71,12 @@ PCA.biplot <- function(PC, x="PC1", y="PC2") {
   # Coordinates & loading names 
   plot <- plot + coord_equal() + ylim(-4,4) + xlim(-5,5) +
     geom_text(data=datapc, aes(x=v1, y=v2, label=physico.names), #varnames
-              size = 4, vjust=0.5,hjust =0.5, color="black")
+              size = 4, vjust=0.7,hjust =-0.1, color="black")
   # Arrows  
   plot <- plot + geom_segment(data=datapc, aes(x=0, y=0, xend=v1, yend=v2), 
                               arrow=arrow(length=unit(0.2,"cm")), alpha=0.75, color="black")
   plot <- plot + theme_bw() +
-   # theme(plot.margin = unit(c(1.2,1.2,1.2,1.2), "cm")) +
+    # theme(plot.margin = unit(c(1.2,1.2,1.2,1.2), "cm")) +
     theme(axis.title.x = element_text(size = 14, angle = 0)) + # axis x
     theme(axis.title.y = element_text(size = 14, angle = 90)) + # axis y
     theme(axis.text.x=element_text(angle=0, size=12, vjust=0.5, color="black")) + #subaxis x
@@ -87,8 +87,8 @@ PCA.biplot <- function(PC, x="PC1", y="PC2") {
 
 Fig <- PCA.biplot(channel.pca)
 Fig
-
-ggsave("Figure 1.pdf", Fig, width = 200, height = 150, units = "mm")
+#
+ggsave("Figure 1.jpg", Fig, width = 200, height = 150, units = "mm")
 
 
 stat_chull(aes(colour = new.groups$group), 
