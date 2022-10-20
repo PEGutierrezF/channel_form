@@ -76,7 +76,7 @@ PCA.biplot <- function(PC, x="PC1", y="PC2") {
   plot <- plot + geom_segment(data=datapc, aes(x=0, y=0, xend=v1, yend=v2), 
                               arrow=arrow(length=unit(0.2,"cm")), alpha=0.75, color="black")
   plot <- plot + theme_bw() +
-    # theme(plot.margin = unit(c(1.2,1.2,1.2,1.2), "cm")) +
+    #theme(plot.margin = unit(c(0.5,0.5,0.5,0.5), "cm")) +
     theme(axis.title.x = element_text(size = 14, angle = 0)) + # axis x
     theme(axis.title.y = element_text(size = 14, angle = 90)) + # axis y
     theme(axis.text.x=element_text(angle=0, size=12, vjust=0.5, color="black")) + #subaxis x
@@ -87,8 +87,8 @@ PCA.biplot <- function(PC, x="PC1", y="PC2") {
 
 Fig <- PCA.biplot(channel.pca)
 Fig
-#
-ggsave("Figure 1.jpg", Fig, width = 200, height = 150, units = "mm")
+
+ggsave("Figure 2.jpg", Fig, width = 200, height = 150, units = "mm")
 
 
 stat_chull(aes(colour = new.groups$group), 
