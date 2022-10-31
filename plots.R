@@ -29,8 +29,9 @@ elevation_data <- data %>% filter(variable=='elevation')
 adonis2(elevation_data$value~ streams,
         data = elevation_data, permutations = 999, method="euclidean")
 
-pair.mod <- pairwise.adonis(value, factors= elevation_data$streams)
-pair.mod
+elevatio.dist <- vegdist(elevation_data$value, method = "euclidean")
+pairwiseAdonis::pairwise.adonis(elevatio.dist, factors=elevation_data$streams)
+
 
 
 elevation_data$streams <- factor(elevation_data$streams,
