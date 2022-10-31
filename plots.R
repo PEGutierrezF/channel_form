@@ -26,6 +26,10 @@ attach(data)
 
 elevation_data <- data %>% filter(variable=='elevation')
 
+adonis2(elevation_data$value~streams,
+        data = elevation_data, permutations = 999, method="euclidean")
+
+
 elevation_data$streams <- factor(elevation_data$streams,
               levels = c("V-shape", "Trapezoid","U-shape"),ordered = TRUE)
 

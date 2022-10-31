@@ -20,9 +20,16 @@ rm(list = ls())
 libraries <- c("cowplot","cluster", "data.table","dplyr","factoextra", "ggplot2", 
                "ggpubr","gtable", "ggfortify","grid",
                'gridExtra',"labdsv","lemon","missForest","missMDA",'patchwork',
-                "tidyr")
+                "tidyr","vegan")
 
 lapply(libraries, require, character.only = TRUE)
+
+
+# Pairwise PERMANOVA
+library(devtools)
+install_github("pmartinezarbizu/pairwiseAdonis/pairwiseAdonis") 
+library(pairwiseAdonis)
+
 
 # Modify the y_scale by plot.  Individually 
 devtools::install_github("teunbrand/ggh4x")
