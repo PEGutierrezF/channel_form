@@ -29,8 +29,10 @@ elevation_data <- data %>% filter(variable=='elevation')
 adonis2(elevation_data$value~ streams,
         data = elevation_data, permutations = 999, method="euclidean")
 
+# https://stats.stackexchange.com/questions/477826/how-is-pairwise-permanova-adonis-a-valid-non-parametric-approach-for-pairwise-co
 elevatio.dist <- vegdist(elevation_data$value, method = "euclidean")
-pairwiseAdonis::pairwise.adonis(elevatio.dist, factors=elevation_data$streams)
+pairwise.adonis(elevatio.dist, factors=elevation_data$streams)
+
 
 
 
